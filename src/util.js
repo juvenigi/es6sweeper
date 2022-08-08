@@ -22,6 +22,10 @@ function getCoordPair(coord, box = { width, height }) {
   return { width: x, height: y };
 }
 
+function getIndex(point, box) {
+  return point.height * (box.height + 1) + point.width;
+}
+
 function randomInts(rangeSize, count) {
   let nums = [...Array(rangeSize).keys()];
   return shuffle(nums).slice(0, count);
@@ -46,4 +50,4 @@ function shuffle(array) {
   return array;
 }
 
-export {boundaryCheck, getCartesianNeighbors, getCoordPair, randomInts};
+export {boundaryCheck, getCartesianNeighbors, getCoordPair, randomInts, getIndex};

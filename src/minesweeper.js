@@ -17,7 +17,6 @@ let board = new SweeperDivBoard(config.width, config.height, config.pxsize);
 
 // Now wire them together
 
-// FIXME: there will be bugs related to uninitialized game board.
-// we could either have some signalling system or make the board "wait" a bit.
 controller.setup(data,board);
 board.setController(controller);
+board.render();

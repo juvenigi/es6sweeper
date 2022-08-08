@@ -38,7 +38,8 @@ export default class SweeperLogic {
       let defusedBombs = neighbors.filter(nei => this.#data.getCell(nei).get().bomb)
                                   .map(nei => this.#data.getCell(nei).defuse())
                                   .filter(Boolean).length;
-      this.#divboard.propagate(cell.get());
+      let prop = {point: point, cell: cell.get()};
+      this.#divboard.propagate(prop);
     })
     if (nextQueue.size > 0) return this.openCellRecur(nextQueue);
   }
