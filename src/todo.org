@@ -1,0 +1,11 @@
+#+title: planned features
+
+* Flags (for bomb count)
+* Win condition
+- have the bomb marked or have the surrounding cells be revealed (making the bomb obvious)
+- if all bombs are "disarmed", player wins
+- on click, check relevant "isDisarmed"
+
+* Timer
+- starts after click
+- ends after win/lost game

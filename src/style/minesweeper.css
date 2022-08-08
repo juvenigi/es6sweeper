@@ -1,0 +1,27 @@
+.board {
+    margin: auto;
+    display: grid;
+/*    grid-template-columns: repeat(auto-fill, 40px); */
+    border:7px solid rgba(126, 54, 54, 0.678);
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+}
+
+.cell-light {
+   background-color: rgb(169, 215, 81);
+}
+
+.cell-dark {
+    background-color: rgb(162, 208, 73);
+}
+
+.cell-open-light {
+
+}
+
+.cell-open-dark {
+
+}
