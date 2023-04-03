@@ -1,38 +1,5 @@
 import { getCartesianNeighbors, randomInts, getCoordPair } from "../util.js";
-
-class SwepperCell {
-  #isOpen = false;
-  #isBomb = false;
-  #isFlagged = false;
-  #neighboringBombs = 0;
-  #defuseCounter = 0; // diffuse counter = 8 - neighboring bombs initially
-
-  setBomb(isBomb) {
-    this.#isBomb = isBomb;
-  }
-
-  setFlag(isFlagged) {
-    this.#isFlagged = isFlagged;
-  }
-
-  defuse() {
-    if (this.#isFlagged || !this.#isBomb) return true;
-    return 8 == ++this.#defuseCounter? true : false;
-  }
-
-  addBombCount(diff) {
-    this.#neighboringBombs += diff;
-    this.#defuseCounter += diff;
-  }
-
-  open() {
-    this.#isOpen = true;
-  }
-
-  get() {
-    return { bomb: this.#isBomb, open: this.#isOpen, neiBombs: this.#neighboringBombs }
-  }
-}
+import SweeperCell from "./SweeperCell.js"
 
 export default class SweeperData {
   #box;
@@ -45,7 +12,7 @@ export default class SweeperData {
 
     for (let i = 0; i < width; i++) {
       for (let j = 0; j < height; j++) {
-        this.#board[i][j] = new SwepperCell();
+        this.#board[i][j] = new SweeperCell();
       }
     }
 
