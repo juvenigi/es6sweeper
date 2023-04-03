@@ -56,7 +56,12 @@ export default class SweeperDivBoard {
   propagate(prop) {
     let coords = prop.point;
     let cell   = prop.cell;
-    
+    console.log(coords);
+    console.log(cell);
+    console.log(this.#cells);
+    this.#cells[getIndex(coords,this.#dimensions)].className='cell-open';
+    // this.#cells[coords.width][coords.height].className='cell-open';
+
   }
 }
 
