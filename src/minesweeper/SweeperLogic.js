@@ -22,7 +22,13 @@ export default class SweeperLogic {
   // by the previous iteration or cell.
   // this implementation can be multithreaded, but a single-thread
   // solution could do less redundant work.
-  openCellRecur(updateQueue) {
+  later(delay) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, delay);
+    });
+}
+  async openCellRecur(updateQueue) {
+    await this.later(500);
     let nextQueue = new Set();
     updateQueue.forEach(coordsjson => {
       let point = JSON.parse(coordsjson);
@@ -37,7 +43,7 @@ export default class SweeperLogic {
       let prop = {point: point, cell: cell.get()};
       this.#divboard.propagate(prop);
     })
-    if (nextQueue.size > 0) this.openCellRecur(nextQueue);
+    if (nextQueue.size > 0) await this.openCellRecur(nextQueue);
   }
 
 }

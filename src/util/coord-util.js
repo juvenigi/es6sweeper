@@ -1,12 +1,9 @@
 function boundaryCheck(value, maxlength) {
-  console.log("value: "+ value + " maxlength: " + maxlength);
-
   let left = value-1;
   let right = value+1;
-
-  let bounds = [];
+  let bounds = [value];
   if (left > -1) bounds.push(left);
-  if (right < maxlength-1) bounds.push(right);
+  if (right < maxlength) bounds.push(right);
 
   return bounds;
 }
@@ -19,7 +16,7 @@ function getCartesianNeighbors(point = { width: 0, height: 0 }, maxWidth, maxHei
   pairs = yValues.flatMap(yvalue => xValues.map((xvalue) => {
     return {width: xvalue, height: yvalue};
   }));
-  console.log(pairs);
+    //.filter(pair => pair.height !== pair.width);
   return pairs;
 }
 

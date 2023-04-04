@@ -7,7 +7,7 @@ import SweeperDivBoard from "./minesweeper/SweeperDivBoard.js";
 const config = {
   width: 13,
   height: 12,
-  bombs: 2,
+  bombs: 3,
   pxsize: 40
 }
 
