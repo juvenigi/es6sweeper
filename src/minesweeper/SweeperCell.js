@@ -1,5 +1,3 @@
-import { getCartesianNeighbors, randomInts, getCoordPair } from "../util.js";
-
 export default class SweeperCell {
   #isOpen = false;
   #isBomb = false;
@@ -17,7 +15,7 @@ export default class SweeperCell {
 
   defuse() {
     if (this.#isFlagged || !this.#isBomb) return true;
-    return 8 == ++this.#defuseCounter? true : false;
+    return 8 === ++this.#defuseCounter;
   }
 
   addBombCount(diff) {
@@ -30,6 +28,6 @@ export default class SweeperCell {
   }
 
   get() {
-    return { bomb: this.#isBomb, open: this.#isOpen, neiBombs: this.#neighboringBombs }
+    return {bomb: this.#isBomb, open: this.#isOpen, neiBombs: this.#neighboringBombs}
   }
 }

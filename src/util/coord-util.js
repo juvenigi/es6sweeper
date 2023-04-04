@@ -1,17 +1,25 @@
-function boundaryCheck(value, maxid) {
-  let array = [value];
-  if (value - 1 >= 0) array.unshift(value - 1);
-  if (value + 1 <= maxid) array.push(value + 1);
-  return array;
+function boundaryCheck(value, maxlength) {
+  console.log("value: "+ value + " maxlength: " + maxlength);
+
+  let left = value-1;
+  let right = value+1;
+
+  let bounds = [];
+  if (left > -1) bounds.push(left);
+  if (right < maxlength-1) bounds.push(right);
+
+  return bounds;
 }
 
-function getCartesianNeighbors(point = { width: 0, height: 0 }, maxWidthID, maxHeightID) {
-  let xValues = boundaryCheck(point.width, maxWidthID);
-  let yValues = boundaryCheck(point.height, maxHeightID);
-  let pairs = [];
+function getCartesianNeighbors(point = { width: 0, height: 0 }, maxWidth, maxHeight) {
+  let xValues = boundaryCheck(point.width, maxWidth);
+  let yValues = boundaryCheck(point.height, maxHeight);
+  let pairs;
 
-  xValues.forEach(x => yValues.forEach(y => pairs.push({ width: x, height: y })));
-  pairs = pairs.filter(pair => point.width != pair.width && point.height != pair.height);
+  pairs = yValues.flatMap(yvalue => xValues.map((xvalue) => {
+    return {width: xvalue, height: yvalue};
+  }));
+  console.log(pairs);
   return pairs;
 }
 
@@ -36,7 +44,7 @@ function shuffle(array) {
   let currentIndex = array.length, randomIndex;
 
   // while there remain elements to shuffle.
-  while (currentIndex != 0) {
+  while (currentIndex !== 0) {
 
     // pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);

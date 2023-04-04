@@ -1,32 +1,34 @@
-import { getCartesianNeighbors, randomInts, getCoordPair } from "../util.js";
+import {getCartesianNeighbors, getCoordPair, randomInts} from "../util/coord-util.js";
 import SweeperCell from "./SweeperCell.js"
 
 export default class SweeperData {
   #box;
   #board; // A 2D Array of SweeperCells
   #extrabomb; // replacement bomb in case the user was unlucky to explode on turn 1
-  constructor(width, height, bombcount) {
-    this.#box = { width: width, height: height };
-    this.#board = new Array(width).fill(null);
-    this.#board = this.#board.map(() => new Array(height).fill(null))
+  #extrabombcount = 1;
 
-    for (let i = 0; i < width; i++) {
-      for (let j = 0; j < height; j++) {
-        this.#board[i][j] = new SweeperCell();
-      }
-    }
+  constructor(width, height, bombcount) {
+    this.#box = {width: width, height: height};
+    this.#board = new Array(width).fill(undefined)
+      .map(() =>
+        new Array(height).fill(undefined)
+          .map(() => new SweeperCell()
+          )
+      );
 
     let size = width * height;
-    let bombCoords = randomInts(size, bombcount + 1);
-    bombCoords = bombCoords.map((int) => getCoordPair(int, { width: width, height: height }));
+    let bombCoords = randomInts(size, bombcount + this.#extrabombcount);
+    bombCoords = bombCoords.map((int) => getCoordPair(int, {width: width, height: height}));
     this.#extrabomb = bombCoords.pop();
     this.setupBombs(width, height, bombCoords);
   }
 
   setupBombs(width, height, bombCoords) {
+    console.log('bombcoords');
+    console.log(bombCoords);
     bombCoords.forEach(coord => {
       this.#readArray(coord).setBomb(true);
-      getCartesianNeighbors(coord, width - 1, height - 1).forEach(
+      getCartesianNeighbors(coord, width, height).forEach(
         neighbor => {
           this.#readArray(neighbor).addBombCount(1);
         }
@@ -37,8 +39,7 @@ export default class SweeperData {
   modifyFirstBomb(point) {
     this.#readArray(point).setBomb(false);
     getCartesianNeighbors(point)
-      .filter(coords => { return this.#readArray(coords).get().bomb })
-      .forEach(this.#readArray(point).addBombCount(1));
+      .forEach((neighbor) => this.#readArray(neighbor).addBombCount(-1));
   }
 
   activateExtraBomb() {
@@ -49,13 +50,14 @@ export default class SweeperData {
   }
 
   getCell(point) { // will be executed one time
-    let cell = this.#board[point.width][point.height];
+    let cell = this.#readArray(point);
     if (cell.get().bomb) {
+      console.log("wow you're lucky");
       this.modifyFirstBomb(point);
       this.activateExtraBomb();
+      this.replaceFunctionGetCell(); // NOTE: this approach is ill-advised, just use if statements.
     }
-    this.replaceFunctionGetCell();
-    console.log("getCell replaced") //FIXME dbg
+
     return cell;
   }
 
@@ -64,6 +66,9 @@ export default class SweeperData {
   }
 
   #readArray(point) {
+    console.log("readarray");
+    console.log(point);
+    console.log(this.#board);
     return this.#board[point.width][point.height];
   }
 }

@@ -1,4 +1,4 @@
-import {getCoordPair, getIndex} from "../util.js"
+import {getCartesianNeighbors, getCoordPair, getIndex} from "../util/coord-util.js"
 
 export default class SweeperDivBoard {
   #dimensions;
@@ -7,26 +7,30 @@ export default class SweeperDivBoard {
   #controller;
 
   constructor(width, height, cellpixels) {
-    let size = width * height;
-
-    this.#dimensions = { width: width, height: height };
+    this.#dimensions = {width: width, height: height};
     this.#divboard = document.querySelector(".board");
-    
+
     // TODO: don't do it here
-    this.#divboard.style.width = (width * cellpixels) + "px"; 
+    this.#divboard.style.width = (width * cellpixels) + "px";
     this.#divboard.style.height = (height * cellpixels) + "px";
     this.#divboard.style.gridTemplateColumns = "repeat(auto-fill, %px)".replace("%", cellpixels);
-    
-    this.#divboard.addEventListener("click", (e) => { this.handleClick(e, this.#dimensions); });
+
+    this.#divboard.addEventListener("click", (e) => {
+      this.handleClick(e);
+    });
+  }
+
+  getDimensions() {
+    return this.#dimensions;
   }
 
   #drawDivs() {
     let width = this.#dimensions.width;
-    let size  = width * this.#dimensions.height;
+    let size = width * this.#dimensions.height;
     for (let i = 0; i < size; i++) {
       let el = document.createElement("div");
       let magic = width % 2 ? 1 : Math.floor(i / width) % 2;
-      el.className = (i % 2 == magic) ? "cell-light" : "cell-dark";
+      el.className = (i % 2 === magic) ? "cell-light" : "cell-dark";
       el.id = "cell " + i.toString();
       this.#divboard.appendChild(el);
     }
@@ -34,7 +38,7 @@ export default class SweeperDivBoard {
   }
 
   render() {
-    this.#divboard.innerHTML= ""; // reset root class to allow re-rendering
+    this.#divboard.innerHTML = ""; // reset root class to allow re-rendering
     this.#drawDivs();
   }
 
@@ -42,24 +46,26 @@ export default class SweeperDivBoard {
     this.#controller = controller;
   }
 
-  handleClick(event, box) {
+  handleClick(event) {
     let id = event.target.id.slice(5) // slice removes "cell " id prefix
+    let box = this.#dimensions;
 
     console.log("dbg: handleClick");
+    console.log(box);
+    console.log(getCartesianNeighbors(getCoordPair(id, box), box.width, box.height));
+    console.log(getIndex(getCoordPair(id, box), box));
     console.log(id);
-    console.log(getCoordPair(id, box));
-    // console.log(getIndex(getCoordPair(id, box), box));
 
     this.#controller.openCell(getCoordPair(id, box));
   }
 
   propagate(prop) {
     let coords = prop.point;
-    let cell   = prop.cell;
+    let cell = prop.cell;
     console.log(coords);
     console.log(cell);
     console.log(this.#cells);
-    this.#cells[getIndex(coords,this.#dimensions)].className='cell-open';
+    this.#cells[getIndex(coords, this.#dimensions)].className = 'cell-open';
     // this.#cells[coords.width][coords.height].className='cell-open';
 
   }

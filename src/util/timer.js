@@ -9,7 +9,7 @@ export default function timer() {
 	function reseter() {
 		clearInterval(interval);
 		interval = setInterval(runningTimer, 1000)
-	};
+	}
 
 	function runningTimer() {
 
